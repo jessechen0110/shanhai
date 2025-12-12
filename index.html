@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>山海 SHANHAI - 霜语部落公会</title>
+    <style>
+        /* --- 基础设置 --- */
+        :root {
+            --primary-gold: #f8b700; 
+            --mop-green-accent: #40a070; 
+            --horde-red: #8c1616; /* 部落红 */
+            --peach-pink: #FF99A5; /* 新增：致敬十里桃林的粉色 */
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- 导航栏 --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(140, 22, 22, 0.3);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links a {
+            margin-left: 30px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        .nav-links a:hover { color: var(--primary-gold); }
+
+        /* --- 英雄区 --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(10,10,10,1)), url('https://images.unsplash.com/photo-1518098268026-4e1626ee9579?q=80&w=2670&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            color: var(--primary-gold);
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(248, 183, 0, 0.3);
+            letter-spacing: 10px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #ddd;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .server-info {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid #333;
+        }
+
+        .cta-btn {
+            padding: 15px 40px;
+            border: 2px solid var(--primary-gold);
+            color: var(--primary-gold);
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: transparent;
+        }
+
+        .cta-btn:hover {
+            background: var(--horde-red);
+            border-color: var(--horde-red);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(140, 22, 22, 0.6);
+        }
+
+        /* --- 通用板块 --- */
+        section { padding: 80px 10%; }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-gold);
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--horde-red), var(--primary-gold));
+            margin: 15px auto 0;
+        }
+
+        /* --- 关于我们 (文案重点修改) --- */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        /* 引用块样式，用于展示旧公会名 */
+        .history-quote {
+            border-left: 3px solid var(--peach-pink);
+            padding-left: 15px;
+            margin: 20px 0;
+            color: #ccc;
+            font-style: italic;
+            background: rgba(255, 153, 165, 0.05);
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+        .stat-item h4 { font-size: 2.5rem; color: var(--horde-red); }
+
+        /* --- 职业招募 --- */
+        .recruitment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+            gap: 15px;
+            margin-bottom: 60px;
+        }
+
+        .class-card {
+            background: var(--bg-card);
+            padding: 20px 10px;
+            text-align: center;
+            border: 1px solid #222;
+            transition: 0.3s;
+            border-radius: 4px;
+        }
+        
+        .class-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+
+        .class-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: #000;
+            text-shadow: none;
+        }
+
+        /* 职业颜色 */
+        .c-warrior { border: 2px solid #C79C6E; background: #C79C6E; }
+        .c-paladin { border: 2px solid #F58CBA; background: #F58CBA; }
+        .c-hunter { border: 2px solid #ABD473; background: #ABD473; }
+        .c-rogue { border: 2px solid #FFF569; background: #FFF569; }
+        .c-priest { border: 2px solid #FFFFFF; background: #FFFFFF; }
+        .c-dk { border: 2px solid #C41F3B; background: #C41F3B; } 
+        .c-shaman { border: 2px solid #0070DE; background: #0070DE; } 
+        .c-mage { border: 2px solid #40C7EB; background: #40C7EB; }
+        .c-warlock { border: 2px solid #8787ED; background: #8787ED; }
+        .c-monk { border: 2px solid #00FF96; background: #00FF96; }
+        .c-druid { border: 2px solid #FF7D0A; background: #FF7D0A; }
+
+        .class-name { font-weight: bold; font-size: 0.95rem; margin-bottom: 5px; }
+        .class-desc { font-size: 0.75rem; color: #888; }
+
+        /* --- 联系方式 --- */
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: #111;
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .qr-section {
+            margin-top: 30px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 4px;
+            width: 180px; height: 180px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .qr-img { max-width: 100%; max-height: 100%; }
+
+        /* --- 移动端 --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .about-content { grid-template-columns: 1fr; }
+            .recruitment-grid { grid-template-columns: repeat(3, 1fr); } 
+            nav { padding: 20px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SHANHAI<span style="color:var(--horde-red); font-size:0.5em; margin-left:10px;">山 海</span></div>
+        <div class="nav-links">
+            <a href="#hero">首页</a>
+            <a href="#about">关于我们</a>
+            <a href="#recruitment">全职业招募</a>
+            <a href="#contact">加入公会</a>
+        </div>
+    </nav>
+
+    <header class="hero" id="hero">
+        <h1 class="fade-in">山海</h1>
+        <p class="fade-in">所爱隔山海，山海皆可平</p>
+        
+        <div class="server-info fade-in">
+            服务器：国服霜语 &nbsp;|&nbsp; <span style="color: #ff3333; font-weight: bold;">部落 HORDE</span>
+        </div>
+
+        <button class="cta-btn fade-in" onclick="window.location.href='#recruitment'">加入我们</button>
+    </header>
+
+    <section id="about">
+        <h2 class="section-title">关于我们</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3 style="color: var(--horde-red);">从桃林深处，到跨越山海</h3>
+                
+                <div class="history-quote">
+                    前身：国服-萨弗拉斯 <span style="color:var(--peach-pink); font-weight:bold;">《十里桃林》</span>
+                </div>
+
+                <p style="margin-bottom: 20px;">
+                    我们的故事始于萨弗拉斯的桃花树下。曾经的《十里桃林》承载了我们无数个开荒的日夜和欢笑。随着国服的回归与新的征程开启，我们集体转战至<strong>【霜语】</strong>，并更名为<strong>《山海》</strong>。
+                </p>
+                <p>
+                    名字虽改，情义未变。我们依然是那个看重情义、氛围和谐的大家庭。无论你是当年陪我们看过桃花的老友，还是在霜语新结识的伙伴，山海之间，必有你一席之地。
+                </p>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <h4>霜语</h4>
+                    <p>当前服务器</p>
+                </div>
+                <div class="stat-item">
+                    <h4>老牌</h4>
+                    <p>公会底蕴</p>
+                </div>
+                <div class="stat-item">
+                    <h4>和谐</h4>
+                    <p>团队氛围</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="recruitment" style="background: #0f0f0f;">
+        <h2 class="section-title">全职业招募</h2>
+        
+        <div style="text-align: center; margin-bottom: 40px;">
+            <p style="font-size: 1.1rem; margin-bottom: 15px;">欢迎所有职业玩家加入，让我们共同探索潘达利亚！</p>
+            <div style="padding: 10px 20px; background: rgba(140, 22, 22, 0.2); border: 1px solid var(--horde-red); border-radius: 4px; display: inline-block;">
+                <strong style="color: var(--primary-gold);">活动时间：</strong>
+                <span style="color: #fff;">周六、周日 晚 8:00 - 11:30</span>
+            </div>
+        </div>
+        
+        <div class="recruitment-grid">
+            <div class="class-card" style="border-top: 3px solid #C79C6E;">
+                <div class="class-icon c-warrior">战</div>
+                <div class="class-name" style="color:#C79C6E">战士</div>
+                <div class="class-desc">Warrior</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #F58CBA;">
+                <div class="class-icon c-paladin">骑</div>
+                <div class="class-name" style="color:#F58CBA">圣骑士</div>
+                <div class="class-desc">Paladin</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #ABD473;">
+                <div class="class-icon c-hunter">猎</div>
+                <div class="class-name" style="color:#ABD473">猎人</div>
+                <div class="class-desc">Hunter</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #FFF569;">
+                <div class="class-icon c-rogue">贼</div>
+                <div class="class-name" style="color:#FFF569">潜行者</div>
+                <div class="class-desc">Rogue</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #FFFFFF;">
+                <div class="class-icon c-priest">牧</div>
+                <div class="class-name" style="color:#FFFFFF">牧师</div>
+                <div class="class-desc">Priest</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #C41F3B;">
+                <div class="class-icon c-dk" style="color: white;">DK</div>
+                <div class="class-name" style="color:#C41F3B">死亡骑士</div>
+                <div class="class-desc">Death Knight</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #0070DE;">
+                <div class="class-icon c-shaman" style="color: white;">萨</div>
+                <div class="class-name" style="color:#0070DE">萨满祭司</div>
+                <div class="class-desc">Shaman</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #40C7EB;">
+                <div class="class-icon c-mage">法</div>
+                <div class="class-name" style="color:#40C7EB">法师</div>
+                <div class="class-desc">Mage</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #8787ED;">
+                <div class="class-icon c-warlock">术</div>
+                <div class="class-name" style="color:#8787ED">术士</div>
+                <div class="class-desc">Warlock</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #00FF96;">
+                <div class="class-icon c-monk">僧</div>
+                <div class="class-name" style="color:#00FF96">武僧</div>
+                <div class="class-desc">Monk</div>
+            </div>
+            <div class="class-card" style="border-top: 3px solid #FF7D0A;">
+                <div class="class-icon c-druid">德</div>
+                <div class="class-name" style="color:#FF7D0A">德鲁伊</div>
+                <div class="class-desc">Druid</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">联系我们</h2>
+        <div class="contact-container">
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: var(--text-main); margin-bottom: 10px;">霜语部落 - 游戏内密聊任意公会成员</h3>
+                <p style="color: var(--primary-gold); font-size: 1.2rem; font-weight: bold;">会长ID：故里飞花</p>
+            </div>
+
+            <div style="text-align:center;">
+                <div class="qr-section">
+                     <img src="https://via.placeholder.com/180?text=YOUR+QR+CODE" alt="公会群二维码" class="qr-img">
+                </div>
+                <p style="margin-top: 15px; color: #888;">扫码加入微信群</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 山海 Guild. 霜语部落 - 原萨弗拉斯《十里桃林》</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.class-card, .contact-container, .hero h1, .hero p, .server-info, .cta-btn, .about-text').forEach((el) => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
